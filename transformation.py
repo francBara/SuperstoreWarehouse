@@ -2,7 +2,9 @@ import pandas as pd
 import numpy as np
 
 df = pd.read_csv('superstore.csv', encoding='unicode_escape')
-
+#round decimals
+columns_to_round = ['Profit', 'Sales']
+df[columns_to_round] = df[columns_to_round].round(2)
 #print(df.columns)
 
 def connectToDates(df, dates, date_column='Order Date'):
@@ -103,10 +105,14 @@ def getSalesPerOrder(locations, dates, customers):
     salesPerOrder = salesPerOrder.filter(['Customer ID', 'Order ID', 'Order Date', 'Ship Date', 'Profit', 'Sales', 'Discount', 'Quantity', 'Location ID']).groupby(['Order ID', 'Customer ID', 'Order Date', 'Ship Date', 'Location ID']).agg(
         TotalProfit=('Profit', 'sum'),
         TotalSales=('Sales', 'sum'),
-        TotalQuantity=('Quantity', 'sum')
+        TotalQuantity=('Quantity', 'sum'),
+        TotalDiscount=('Discount', 'sum')
     ).reset_index()
 
     previous_length = len(salesPerOrder)
+
+    columns_to_round = ['TotalProfit', 'TotalSales']
+    salesPerOrder[columns_to_round] = salesPerOrder[columns_to_round].round(2)
 
     salesPerOrder = connectToDates(salesPerOrder, dates)
     salesPerOrder = connectToDates(salesPerOrder, dates, date_column='Ship Date')
