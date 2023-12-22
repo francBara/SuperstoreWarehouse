@@ -34,3 +34,15 @@ WHERE
 GROUP BY 
     c.Segment, 
     p.ProductID order by c.Segment, SUM(spi.Profit) DESC;
+
+
+
+--Number of locations per customer
+SELECT c.CustomerID, c.Name, COUNT(DISTINCT l.LocationID) as LocationsNumber from sales_per_order spi, customer c, location l where spi.CustomerID=c.CustomerID
+and spi.LocationID=l.LocationID group by c.CustomerID order by LocationsNumber desc;
+
+
+--Most profitable cities during time
+SELECT l.Country, l.State, l.Region, l.City, t.Year, t.Month, SUM(spo.Profit) as Profit, SUM(spo.Sales) as Sales
+from location l, sales_per_order spo, time t where l.LocationID=spo.LocationID and t.TimeID=spo.ShipDateID
+group by l.Country, l.State, l.Region, l.City, t.Year, t.Month order by t.Year ASC, t.Month ASC, Profit DESC;
