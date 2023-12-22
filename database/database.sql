@@ -14,16 +14,13 @@ CREATE TABLE `customer` (
   PRIMARY KEY (`CustomerID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
-CREATE TABLE `item_sales` (
-  `ProductID` int DEFAULT NULL,
-  `OrderDateID` int DEFAULT NULL,
-  `Quantity` int DEFAULT NULL,
-  `Profit` decimal(15,2) DEFAULT NULL,
-  `Sales` decimal(15,2) DEFAULT NULL,
-  KEY `fk_is_ProductID_idx` (`ProductID`),
-  KEY `fk_is_OrderDateID_idx_is` (`OrderDateID`),
-  CONSTRAINT `fk_is_OrderDateID` FOREIGN KEY (`OrderDateID`) REFERENCES `time` (`TimeID`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-  CONSTRAINT `fk_is_ProductID` FOREIGN KEY (`ProductID`) REFERENCES `product` (`ProductID`) ON DELETE RESTRICT ON UPDATE RESTRICT
+CREATE TABLE `product` (
+  `ProductID` int NOT NULL,
+  `ProductDB_ID` varchar(20) DEFAULT NULL,
+  `Category` varchar(20) DEFAULT NULL,
+  `Subcategory` varchar(20) DEFAULT NULL,
+  `Name` varchar(150) DEFAULT NULL,
+  PRIMARY KEY (`ProductID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 CREATE TABLE `location` (
@@ -36,13 +33,16 @@ CREATE TABLE `location` (
   PRIMARY KEY (`LocationID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
-CREATE TABLE `product` (
-  `ProductID` int NOT NULL,
-  `ProductDB_ID` varchar(20) DEFAULT NULL,
-  `Category` varchar(20) DEFAULT NULL,
-  `Subcategory` varchar(20) DEFAULT NULL,
-  `Name` varchar(150) DEFAULT NULL,
-  PRIMARY KEY (`ProductID`)
+CREATE TABLE `item_sales` (
+  `ProductID` int DEFAULT NULL,
+  `OrderDateID` int DEFAULT NULL,
+  `Quantity` int DEFAULT NULL,
+  `Profit` decimal(15,2) DEFAULT NULL,
+  `Sales` decimal(15,2) DEFAULT NULL,
+  KEY `fk_is_ProductID_idx` (`ProductID`),
+  KEY `fk_is_OrderDateID_idx_is` (`OrderDateID`),
+  CONSTRAINT `fk_is_OrderDateID` FOREIGN KEY (`OrderDateID`) REFERENCES `time` (`TimeID`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  CONSTRAINT `fk_is_ProductID` FOREIGN KEY (`ProductID`) REFERENCES `product` (`ProductID`) ON DELETE RESTRICT ON UPDATE RESTRICT
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 CREATE TABLE `sales_per_item` (
