@@ -46,3 +46,8 @@ and spi.LocationID=l.LocationID group by c.CustomerID order by LocationsNumber d
 SELECT l.Country, l.State, l.Region, l.City, t.Year, t.Month, SUM(spo.Profit) as Profit, SUM(spo.Sales) as Sales
 from location l, sales_per_order spo, time t where l.LocationID=spo.LocationID and t.TimeID=spo.ShipDateID
 group by l.Country, l.State, l.Region, l.City, t.Year, t.Month order by t.Year ASC, t.Month ASC, Profit DESC;
+
+--Total profit/sales per product subcategory each month, ranked by profit
+SELECT p.Category, p.Subcategory, t.year, t.month, SUM(spi.Profit) as Profit, SUM(spi.Sales) as Sales from sales_per_item spi, product p, time t
+where spi.ProductID=p.ProductID and spi.OrderDateID=t.TimeID group by p.Category, p.Subcategory, t.year, t.month order by t.year asc, t.month asc,
+Profit desc;
