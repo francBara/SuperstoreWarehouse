@@ -75,10 +75,12 @@ def getTimes():
 
 
 def getItemSales(dates, products):
-    itemSales = df.filter(['Product ID', 'Order Date', 'Quantity', 'Profit', 'Sales']).groupby(['Product ID', 'Order Date']).sum().reset_index()
-    itemSales = connectToDates(itemSales, dates)
+    itemSales = df.filter(['Product ID', 'Quantity', 'Profit', 'Sales']).groupby(['Product ID']).sum().reset_index()
     itemSales = connectToIncrementalKey(itemSales, products, 'Product ID', 'ProductDB_ID')
-    itemSales = itemSales[['Product ID', 'Quantity', 'Profit', 'Sales', 'Order Date']]
+
+    itemSales[['Profit', 'Sales']] = itemSales[['Profit', 'Sales']].round(2)
+
+    itemSales = itemSales[['Product ID', 'Quantity', 'Profit', 'Sales']]
     return itemSales
 
 
@@ -106,7 +108,7 @@ def getSalesPerOrder(locations, dates, customers):
         TotalProfit=('Profit', 'sum'),
         TotalSales=('Sales', 'sum'),
         TotalQuantity=('Quantity', 'sum'),
-        TotalDiscount=('Discount', 'sum')
+        #TotalDiscount=('Discount', 'sum')
     ).reset_index()
 
     previous_length = len(salesPerOrder)
