@@ -63,3 +63,7 @@ SELECT p.Category, SUM(i.Quantity) as Quantity FROM store.product as p JOIN stor
 
 --Total sales and profit per product category
 SELECT p.Category, SUM(i.Sales) as Sales, SUM(i.Profit) as Profit FROM store.product as p JOIN store.item_sales as i on p.ProductID=i.ProductID group by p.Category;
+
+--Moving average on profit with window of 5, per month
+select year, month, sum(profit) as profit, avg(sum(profit)) over(order by t.year, t.month rows between 5 preceding and current row) as ma_profit from sales_per_item spi, time t
+where spi.orderdateid=t.timeid group by t.year, t.month
